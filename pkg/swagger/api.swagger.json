@@ -1,0 +1,315 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Blogger API",
+    "version": "1.0.0",
+    "contact": {
+      "name": "Georgy P",
+      "email": "Aegoraa@yandex.ru"
+    }
+  },
+  "tags": [
+    {
+      "name": "BloggerV1"
+    }
+  ],
+  "host": "localhost:8080",
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/v1/blogs": {
+      "get": {
+        "operationId": "BloggerV1_ListBlogs",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/blogger_v1ListBlogsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "BloggerV1"
+        ]
+      },
+      "post": {
+        "operationId": "BloggerV1_CreateBlog",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/blogger_v1CreateBlogResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/blogger_v1CreateBlogRequest"
+            }
+          }
+        ],
+        "tags": [
+          "BloggerV1"
+        ]
+      }
+    },
+    "/v1/blogs/{id}": {
+      "get": {
+        "operationId": "BloggerV1_GetBlog",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/blogger_v1GetBlogResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "BloggerV1"
+        ]
+      },
+      "delete": {
+        "operationId": "BloggerV1_DeleteBlog",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "BloggerV1"
+        ]
+      },
+      "patch": {
+        "operationId": "BloggerV1_UpdateBlog",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "blog": {
+                  "$ref": "#/definitions/blogger_v1UpdateBlogInfo"
+                }
+              }
+            }
+          }
+        ],
+        "tags": [
+          "BloggerV1"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "blogger_v1Blog": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "blog": {
+          "$ref": "#/definitions/blogger_v1BlogInfo"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "blogger_v1BlogInfo": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "websiteUrl": {
+          "type": "string"
+        }
+      }
+    },
+    "blogger_v1CreateBlogRequest": {
+      "type": "object",
+      "properties": {
+        "blog": {
+          "$ref": "#/definitions/blogger_v1BlogInfo"
+        }
+      }
+    },
+    "blogger_v1CreateBlogResponse": {
+      "type": "object",
+      "properties": {
+        "blog": {
+          "$ref": "#/definitions/blogger_v1Blog"
+        }
+      }
+    },
+    "blogger_v1GetBlogResponse": {
+      "type": "object",
+      "properties": {
+        "blog": {
+          "$ref": "#/definitions/blogger_v1Blog"
+        }
+      }
+    },
+    "blogger_v1ListBlogsResponse": {
+      "type": "object",
+      "properties": {
+        "blog": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/blogger_v1Blog"
+          }
+        }
+      }
+    },
+    "blogger_v1UpdateBlogInfo": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "websiteUrl": {
+          "type": "string"
+        }
+      }
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    }
+  }
+}
