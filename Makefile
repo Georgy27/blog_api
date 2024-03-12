@@ -2,6 +2,8 @@ include .env
 LOCAL_BIN:=$(CURDIR)/bin
 
 install-deps:
+	GOBIN=$(LOCAL_BIN) go get github.com/Masterminds/squirrel
+	GOBIN=$(LOCAL_BIN) go install github.com/pressly/goose/v3/cmd/goose@v3.14.0
 	GOBIN=$(LOCAL_BIN) go get github.com/envoyproxy/protoc-gen-validate/validate
 	GOBIN=$(LOCAL_BIN) go get github.com/rakyll/statik/fs
 	GOBIN=$(LOCAL_BIN) go get github.com/grpc-ecosystem/grpc-gateway/v2/runtime

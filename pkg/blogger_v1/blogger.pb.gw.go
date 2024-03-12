@@ -273,7 +273,7 @@ func local_request_BloggerV1_ListBlogs_0(ctx context.Context, marshaler runtime.
 
 }
 
-// RegisterBloggerV1HandlerServer registers the http handler for service BloggerV1 to "mux".
+// RegisterBloggerV1HandlerServer registers the http handlers for service BloggerV1 to "mux".
 // UnaryRPC     :call BloggerV1Server directly.
 // StreamingRPC :currently unsupported pending https://github.com/grpc/grpc-go/issues/906.
 // Note that using this registration option will cause many gRPC library features to stop working. Consider using RegisterBloggerV1HandlerFromEndpoint instead.
@@ -432,14 +432,14 @@ func RegisterBloggerV1HandlerFromEndpoint(ctx context.Context, mux *runtime.Serv
 	return RegisterBloggerV1Handler(ctx, mux, conn)
 }
 
-// RegisterBloggerV1Handler registers the http handler for service BloggerV1 to "mux".
-// The handler forward requests to the grpc endpoint over "conn".
+// RegisterBloggerV1Handler registers the http handlers for service BloggerV1 to "mux".
+// The handlers forward requests to the grpc endpoint over "conn".
 func RegisterBloggerV1Handler(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientConn) error {
 	return RegisterBloggerV1HandlerClient(ctx, mux, NewBloggerV1Client(conn))
 }
 
-// RegisterBloggerV1HandlerClient registers the http handler for service BloggerV1
-// to "mux". The handler forward requests to the grpc endpoint over the given implementation of "BloggerV1Client".
+// RegisterBloggerV1HandlerClient registers the http handlers for service BloggerV1
+// to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "BloggerV1Client".
 // Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "BloggerV1Client"
 // doesn't go through the normal gRPC flow (creating a gRPC client etc.) then it will be up to the passed in
 // "BloggerV1Client" to call the correct interceptors.

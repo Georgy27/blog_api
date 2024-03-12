@@ -66,19 +66,15 @@ message BlogInfo {
 
 message Blog {
   int64 id = 1;
-  BlogInfo blog = 2;
+  BlogInfo info = 2;
   google.protobuf.Timestamp created_at = 3;
   google.protobuf.Timestamp updated_at = 4;
 }
 
-message UpdateBlogInfo {
-  google.protobuf.StringValue name = 1;
-  google.protobuf.StringValue description = 2;
-  google.protobuf.StringValue website_url = 3;
-}
-
 message CreateBlogRequest {
-  BlogInfo blog = 1;
+  string name = 1 [(validate.rules).string = {min_len: 1, max_len: 15}];
+  string description = 2 [(validate.rules).string = {min_len: 1, max_len: 500}];
+  string website_url = 3 [(validate.rules).string = {min_len: 1, max_len: 100}];
 }
 
 message CreateBlogResponse {
@@ -87,7 +83,9 @@ message CreateBlogResponse {
 
 message UpdateBlogRequest {
   int64 id = 1;
-  UpdateBlogInfo blog = 2;
+  google.protobuf.StringValue name = 2;
+  google.protobuf.StringValue description = 3;
+  google.protobuf.StringValue website_url = 4;
 }
 
 message DeleteBlogRequest {

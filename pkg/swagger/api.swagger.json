@@ -185,8 +185,14 @@
             "schema": {
               "type": "object",
               "properties": {
-                "blog": {
-                  "$ref": "#/definitions/blogger_v1UpdateBlogInfo"
+                "name": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "websiteUrl": {
+                  "type": "string"
                 }
               }
             }
@@ -206,7 +212,7 @@
           "type": "string",
           "format": "int64"
         },
-        "blog": {
+        "info": {
           "$ref": "#/definitions/blogger_v1BlogInfo"
         },
         "createdAt": {
@@ -236,8 +242,14 @@
     "blogger_v1CreateBlogRequest": {
       "type": "object",
       "properties": {
-        "blog": {
-          "$ref": "#/definitions/blogger_v1BlogInfo"
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "websiteUrl": {
+          "type": "string"
         }
       }
     },
@@ -266,20 +278,6 @@
             "type": "object",
             "$ref": "#/definitions/blogger_v1Blog"
           }
-        }
-      }
-    },
-    "blogger_v1UpdateBlogInfo": {
-      "type": "object",
-      "properties": {
-        "name": {
-          "type": "string"
-        },
-        "description": {
-          "type": "string"
-        },
-        "websiteUrl": {
-          "type": "string"
         }
       }
     },

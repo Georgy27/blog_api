@@ -121,6 +121,7 @@ func (i *injector) GetBlogService(ctx context.Context) blogService.BlogService {
 	if i.blogService == nil {
 		i.blogService = blogService.NewBlogService(
 			i.GetNoteRepository(ctx),
+			i.GetTxManager(ctx),
 		)
 	}
 

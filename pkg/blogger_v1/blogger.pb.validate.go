@@ -164,11 +164,11 @@ func (m *Blog) validate(all bool) error {
 	// no validation rules for Id
 
 	if all {
-		switch v := interface{}(m.GetBlog()).(type) {
+		switch v := interface{}(m.GetInfo()).(type) {
 		case interface{ ValidateAll() error }:
 			if err := v.ValidateAll(); err != nil {
 				errors = append(errors, BlogValidationError{
-					field:  "Blog",
+					field:  "Info",
 					reason: "embedded message failed validation",
 					cause:  err,
 				})
@@ -176,16 +176,16 @@ func (m *Blog) validate(all bool) error {
 		case interface{ Validate() error }:
 			if err := v.Validate(); err != nil {
 				errors = append(errors, BlogValidationError{
-					field:  "Blog",
+					field:  "Info",
 					reason: "embedded message failed validation",
 					cause:  err,
 				})
 			}
 		}
-	} else if v, ok := interface{}(m.GetBlog()).(interface{ Validate() error }); ok {
+	} else if v, ok := interface{}(m.GetInfo()).(interface{ Validate() error }); ok {
 		if err := v.Validate(); err != nil {
 			return BlogValidationError{
-				field:  "Blog",
+				field:  "Info",
 				reason: "embedded message failed validation",
 				cause:  err,
 			}
@@ -327,193 +327,6 @@ var _ interface {
 	ErrorName() string
 } = BlogValidationError{}
 
-// Validate checks the field values on UpdateBlogInfo with the rules defined in
-// the proto definition for this message. If any rules are violated, the first
-// error encountered is returned, or nil if there are no violations.
-func (m *UpdateBlogInfo) Validate() error {
-	return m.validate(false)
-}
-
-// ValidateAll checks the field values on UpdateBlogInfo with the rules defined
-// in the proto definition for this message. If any rules are violated, the
-// result is a list of violation errors wrapped in UpdateBlogInfoMultiError,
-// or nil if none found.
-func (m *UpdateBlogInfo) ValidateAll() error {
-	return m.validate(true)
-}
-
-func (m *UpdateBlogInfo) validate(all bool) error {
-	if m == nil {
-		return nil
-	}
-
-	var errors []error
-
-	if all {
-		switch v := interface{}(m.GetName()).(type) {
-		case interface{ ValidateAll() error }:
-			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, UpdateBlogInfoValidationError{
-					field:  "Name",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		case interface{ Validate() error }:
-			if err := v.Validate(); err != nil {
-				errors = append(errors, UpdateBlogInfoValidationError{
-					field:  "Name",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		}
-	} else if v, ok := interface{}(m.GetName()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return UpdateBlogInfoValidationError{
-				field:  "Name",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
-		}
-	}
-
-	if all {
-		switch v := interface{}(m.GetDescription()).(type) {
-		case interface{ ValidateAll() error }:
-			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, UpdateBlogInfoValidationError{
-					field:  "Description",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		case interface{ Validate() error }:
-			if err := v.Validate(); err != nil {
-				errors = append(errors, UpdateBlogInfoValidationError{
-					field:  "Description",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		}
-	} else if v, ok := interface{}(m.GetDescription()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return UpdateBlogInfoValidationError{
-				field:  "Description",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
-		}
-	}
-
-	if all {
-		switch v := interface{}(m.GetWebsiteUrl()).(type) {
-		case interface{ ValidateAll() error }:
-			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, UpdateBlogInfoValidationError{
-					field:  "WebsiteUrl",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		case interface{ Validate() error }:
-			if err := v.Validate(); err != nil {
-				errors = append(errors, UpdateBlogInfoValidationError{
-					field:  "WebsiteUrl",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		}
-	} else if v, ok := interface{}(m.GetWebsiteUrl()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return UpdateBlogInfoValidationError{
-				field:  "WebsiteUrl",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
-		}
-	}
-
-	if len(errors) > 0 {
-		return UpdateBlogInfoMultiError(errors)
-	}
-
-	return nil
-}
-
-// UpdateBlogInfoMultiError is an error wrapping multiple validation errors
-// returned by UpdateBlogInfo.ValidateAll() if the designated constraints
-// aren't met.
-type UpdateBlogInfoMultiError []error
-
-// Error returns a concatenation of all the error messages it wraps.
-func (m UpdateBlogInfoMultiError) Error() string {
-	var msgs []string
-	for _, err := range m {
-		msgs = append(msgs, err.Error())
-	}
-	return strings.Join(msgs, "; ")
-}
-
-// AllErrors returns a list of validation violation errors.
-func (m UpdateBlogInfoMultiError) AllErrors() []error { return m }
-
-// UpdateBlogInfoValidationError is the validation error returned by
-// UpdateBlogInfo.Validate if the designated constraints aren't met.
-type UpdateBlogInfoValidationError struct {
-	field  string
-	reason string
-	cause  error
-	key    bool
-}
-
-// Field function returns field value.
-func (e UpdateBlogInfoValidationError) Field() string { return e.field }
-
-// Reason function returns reason value.
-func (e UpdateBlogInfoValidationError) Reason() string { return e.reason }
-
-// Cause function returns cause value.
-func (e UpdateBlogInfoValidationError) Cause() error { return e.cause }
-
-// Key function returns key value.
-func (e UpdateBlogInfoValidationError) Key() bool { return e.key }
-
-// ErrorName returns error name.
-func (e UpdateBlogInfoValidationError) ErrorName() string { return "UpdateBlogInfoValidationError" }
-
-// Error satisfies the builtin error interface
-func (e UpdateBlogInfoValidationError) Error() string {
-	cause := ""
-	if e.cause != nil {
-		cause = fmt.Sprintf(" | caused by: %v", e.cause)
-	}
-
-	key := ""
-	if e.key {
-		key = "key for "
-	}
-
-	return fmt.Sprintf(
-		"invalid %sUpdateBlogInfo.%s: %s%s",
-		key,
-		e.field,
-		e.reason,
-		cause)
-}
-
-var _ error = UpdateBlogInfoValidationError{}
-
-var _ interface {
-	Field() string
-	Reason() string
-	Key() bool
-	Cause() error
-	ErrorName() string
-} = UpdateBlogInfoValidationError{}
-
 // Validate checks the field values on CreateBlogRequest with the rules defined
 // in the proto definition for this message. If any rules are violated, the
 // first error encountered is returned, or nil if there are no violations.
@@ -536,33 +349,37 @@ func (m *CreateBlogRequest) validate(all bool) error {
 
 	var errors []error
 
-	if all {
-		switch v := interface{}(m.GetBlog()).(type) {
-		case interface{ ValidateAll() error }:
-			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, CreateBlogRequestValidationError{
-					field:  "Blog",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		case interface{ Validate() error }:
-			if err := v.Validate(); err != nil {
-				errors = append(errors, CreateBlogRequestValidationError{
-					field:  "Blog",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
+	if l := utf8.RuneCountInString(m.GetName()); l < 1 || l > 15 {
+		err := CreateBlogRequestValidationError{
+			field:  "Name",
+			reason: "value length must be between 1 and 15 runes, inclusive",
 		}
-	} else if v, ok := interface{}(m.GetBlog()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return CreateBlogRequestValidationError{
-				field:  "Blog",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
+		if !all {
+			return err
 		}
+		errors = append(errors, err)
+	}
+
+	if l := utf8.RuneCountInString(m.GetDescription()); l < 1 || l > 500 {
+		err := CreateBlogRequestValidationError{
+			field:  "Description",
+			reason: "value length must be between 1 and 500 runes, inclusive",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if l := utf8.RuneCountInString(m.GetWebsiteUrl()); l < 1 || l > 100 {
+		err := CreateBlogRequestValidationError{
+			field:  "WebsiteUrl",
+			reason: "value length must be between 1 and 100 runes, inclusive",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
 	}
 
 	if len(errors) > 0 {
@@ -801,11 +618,11 @@ func (m *UpdateBlogRequest) validate(all bool) error {
 	// no validation rules for Id
 
 	if all {
-		switch v := interface{}(m.GetBlog()).(type) {
+		switch v := interface{}(m.GetName()).(type) {
 		case interface{ ValidateAll() error }:
 			if err := v.ValidateAll(); err != nil {
 				errors = append(errors, UpdateBlogRequestValidationError{
-					field:  "Blog",
+					field:  "Name",
 					reason: "embedded message failed validation",
 					cause:  err,
 				})
@@ -813,16 +630,74 @@ func (m *UpdateBlogRequest) validate(all bool) error {
 		case interface{ Validate() error }:
 			if err := v.Validate(); err != nil {
 				errors = append(errors, UpdateBlogRequestValidationError{
-					field:  "Blog",
+					field:  "Name",
 					reason: "embedded message failed validation",
 					cause:  err,
 				})
 			}
 		}
-	} else if v, ok := interface{}(m.GetBlog()).(interface{ Validate() error }); ok {
+	} else if v, ok := interface{}(m.GetName()).(interface{ Validate() error }); ok {
 		if err := v.Validate(); err != nil {
 			return UpdateBlogRequestValidationError{
-				field:  "Blog",
+				field:  "Name",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if all {
+		switch v := interface{}(m.GetDescription()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, UpdateBlogRequestValidationError{
+					field:  "Description",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, UpdateBlogRequestValidationError{
+					field:  "Description",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetDescription()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return UpdateBlogRequestValidationError{
+				field:  "Description",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if all {
+		switch v := interface{}(m.GetWebsiteUrl()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, UpdateBlogRequestValidationError{
+					field:  "WebsiteUrl",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, UpdateBlogRequestValidationError{
+					field:  "WebsiteUrl",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetWebsiteUrl()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return UpdateBlogRequestValidationError{
+				field:  "WebsiteUrl",
 				reason: "embedded message failed validation",
 				cause:  err,
 			}

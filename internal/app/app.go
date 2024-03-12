@@ -6,6 +6,7 @@ import (
 	"github.com/Georgy27/blogger_api/pkg/blogger_v1"
 	"github.com/Georgy27/blogger_api/pkg/closer"
 	"github.com/Georgy27/blogger_api/pkg/interceptor"
+	_ "github.com/Georgy27/blogger_api/statik"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/rakyll/statik/fs"
 	"github.com/rs/cors"

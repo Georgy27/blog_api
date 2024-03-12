@@ -1,13 +1,15 @@
 package model
 
-import "time"
+import (
+	"database/sql"
+	"time"
+)
 
 type Blog struct {
 	ID        int64
-	Name      string
-	Info      *BlogInfo
+	Info      BlogInfo
 	CreatedAt time.Time
-	UpdatedAt time.Time
+	UpdatedAt sql.NullTime
 }
 
 type BlogInfo struct {

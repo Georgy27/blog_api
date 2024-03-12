@@ -6,7 +6,7 @@ import (
 )
 
 type BlogRepository interface {
-	CreateBlog(ctx context.Context, info *model.BlogInfo) (int64, error)
+	CreateBlog(ctx context.Context, info *model.BlogInfo) (*model.Blog, error)
 	GetBlog(ctx context.Context, id int64) (*model.Blog, error)
 	UpdateBlog(ctx context.Context, id int64, info *model.BlogInfo) error
 	DeleteBlog(ctx context.Context, id int64) error
