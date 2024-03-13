@@ -45,18 +45,47 @@ func (h *BlogHandler) CreateBlog(ctx context.Context, req *bloggerV1.CreateBlogR
 }
 
 func (h *BlogHandler) GetBlog(ctx context.Context, req *bloggerV1.GetBlogRequest) (*bloggerV1.GetBlogResponse, error) {
+	blog, err := h.blogService.GetBlog(ctx, req.GetId())
 
-	return nil, nil
+	if err != nil {
+		return nil, fmt.Errorf("failed to get blog: %v", err)
+	}
+
+	return &bloggerV1.GetBlogResponse{
+		Blog: converter.ToBlogProtoFromService(blog),
+	}, nil
 }
 
 func (h *BlogHandler) UpdateBlog(ctx context.Context, req *bloggerV1.UpdateBlogRequest) (*emptypb.Empty, error) {
-	return nil, nil
+
+	err := h.blogService.UpdateBlog(ctx, req.GetId(), converter.ToBlogInfoFromProtoUpdate(req))
+
+	if err != nil {
+		return nil, fmt.Errorf("failed to update blog: %v", err)
+	}
+
+	return &emptypb.Empty{}, nil
 }
 
 func (h *BlogHandler) DeleteBlog(ctx context.Context, req *bloggerV1.DeleteBlogRequest) (*emptypb.Empty, error) {
-	return nil, nil
+
+	err := h.blogService.DeleteBlog(ctx, req.GetId())
+
+	if err != nil {
+		return nil, fmt.Errorf("failed to delete blog: %v", err)
+	}
+
+	return &emptypb.Empty{}, nil
 }
 
 func (h *BlogHandler) ListBlogs(ctx context.Context, req *bloggerV1.ListBlogsRequest) (*bloggerV1.ListBlogsResponse, error) {
-	return nil, nil
+	blogs, err := h.blogService.ListBlogs(ctx)
+
+	if err != nil {
+		return nil, fmt.Errorf("failed to list blogs: %v", err)
+	}
+
+	return &bloggerV1.ListBlogsResponse{
+		Blog: converter.ToBlogProtoListFromService(blogs),
+	}, nil
 }

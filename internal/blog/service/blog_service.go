@@ -2,7 +2,6 @@ package service
 
 import (
 	"context"
-	"fmt"
 	"github.com/Georgy27/blogger_api/internal/blog/model"
 	blogRepository "github.com/Georgy27/blogger_api/internal/blog/repository"
 	"github.com/Georgy27/blogger_api/pkg/db"
@@ -27,12 +26,8 @@ func (s *blogServ) CreateBlog(ctx context.Context, info *model.BlogInfo) (*model
 		var errTx error
 		blog, errTx = s.blogRepository.CreateBlog(ctx, info)
 		if errTx != nil {
-			fmt.Println("inside service error")
 			return errTx
 		}
-
-		fmt.Println("hello there from service")
-		fmt.Println(blog)
 
 		return nil
 	})
@@ -45,17 +40,65 @@ func (s *blogServ) CreateBlog(ctx context.Context, info *model.BlogInfo) (*model
 }
 
 func (s *blogServ) GetBlog(ctx context.Context, id int64) (*model.Blog, error) {
-	return s.blogRepository.GetBlog(ctx, id)
+	blog, err := s.blogRepository.GetBlog(ctx, id)
+	if err != nil {
+		return nil, err
+	}
+
+	return blog, nil
 }
 
-func (s *blogServ) UpdateBlog(ctx context.Context, id int64, info *model.BlogInfo) error {
-	return s.blogRepository.UpdateBlog(ctx, id, info)
+func (s *blogServ) UpdateBlog(ctx context.Context, id int64, info *model.UpdateBlogInfo) error {
+	_, err := s.blogRepository.GetBlog(ctx, id)
+	if err != nil {
+		return err
+	}
+
+	err = s.txManager.ReadCommitted(ctx, func(ctx context.Context) error {
+		var errTx error
+		errTx = s.blogRepository.UpdateBlog(ctx, id, info)
+		if errTx != nil {
+			return errTx
+		}
+
+		return nil
+	})
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func (s *blogServ) DeleteBlog(ctx context.Context, id int64) error {
-	return s.blogRepository.DeleteBlog(ctx, id)
+	_, err := s.blogRepository.GetBlog(ctx, id)
+	if err != nil {
+		return err
+	}
+
+	err = s.txManager.ReadCommitted(ctx, func(ctx context.Context) error {
+		var errTx error
+		errTx = s.blogRepository.DeleteBlog(ctx, id)
+		if errTx != nil {
+			return errTx
+		}
+
+		return nil
+	})
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func (s *blogServ) ListBlogs(ctx context.Context) ([]*model.Blog, error) {
-	return s.blogRepository.ListBlogs(ctx)
+	blogs, err := s.blogRepository.ListBlogs(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return blogs, nil
 }

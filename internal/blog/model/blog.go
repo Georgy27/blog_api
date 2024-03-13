@@ -17,3 +17,9 @@ type BlogInfo struct {
 	Description string
 	WebsiteUrl  string
 }
+
+type UpdateBlogInfo struct {
+	Name        sql.NullString
+	Description sql.NullString
+	WebsiteUrl  sql.NullString
+}

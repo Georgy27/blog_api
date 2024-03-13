@@ -14,6 +14,13 @@ func ToBlogFromRepo(blog *modelRepo.Blog) *model.Blog {
 	}
 }
 
+func ToBlogsFromRepo(blogs []*modelRepo.Blog) []*model.Blog {
+	var result []*model.Blog
+	for _, blog := range blogs {
+		result = append(result, ToBlogFromRepo(blog))
+	}
+	return result
+}
 func ToBlogInfoFromRepo(blogInfo modelRepo.BlogInfo) *model.BlogInfo {
 	return &model.BlogInfo{
 		Name:        blogInfo.Name,
