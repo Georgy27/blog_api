@@ -3,9 +3,10 @@ package app
 import (
 	"context"
 	"github.com/Georgy27/blogger_api/internal/config"
-	"github.com/Georgy27/blogger_api/pkg/blogger_v1"
 	"github.com/Georgy27/blogger_api/pkg/closer"
 	"github.com/Georgy27/blogger_api/pkg/interceptor"
+	"github.com/Georgy27/blogger_api/pkg/proto/blogger_v1"
+	"github.com/Georgy27/blogger_api/pkg/proto/post_v1"
 	_ "github.com/Georgy27/blogger_api/statik"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/rakyll/statik/fs"
@@ -114,12 +115,12 @@ func (a *App) initInjector(_ context.Context) error {
 
 func (a *App) initGRPCServer(ctx context.Context) error {
 	a.grpcServer = grpc.NewServer(grpc.Creds(insecure.NewCredentials()),
-		grpc.UnaryInterceptor(interceptor.ValidateInterceptor))
+		grpc.ChainUnaryInterceptor(interceptor.ValidateInterceptor, interceptor.ErrorCodesInterceptor))
 
 	reflection.Register(a.grpcServer)
 
 	blogger_v1.RegisterBloggerV1Server(a.grpcServer, a.injector.GetBlogHandler(ctx))
-
+	post_v1.RegisterPostV1Server(a.grpcServer, a.injector.GetPostHandler(ctx))
 	return nil
 }
 
@@ -131,6 +132,11 @@ func (a *App) initHTTPServer(ctx context.Context) error {
 	}
 
 	err := blogger_v1.RegisterBloggerV1HandlerFromEndpoint(ctx, mux, a.injector.GRPCConfig().Address(), opts)
+	if err != nil {
+		return err
+	}
+
+	err = post_v1.RegisterPostV1HandlerFromEndpoint(ctx, mux, a.injector.GRPCConfig().Address(), opts)
 	if err != nil {
 		return err
 	}
@@ -158,7 +164,8 @@ func (a *App) initSwaggerServer(_ context.Context) error {
 
 	mux := http.NewServeMux()
 	mux.Handle("/", http.StripPrefix("/", http.FileServer(statikFs)))
-	mux.HandleFunc("/api.swagger.json", serveSwaggerFile("/api.swagger.json"))
+	mux.HandleFunc("/blogger-api.swagger.json", serveSwaggerFile("/blogger-api.swagger.json"))
+	mux.HandleFunc("/api.swagger.json", serveSwaggerFile("/post-api.swagger.json"))
 
 	a.swaggerServer = &http.Server{
 		Addr:    a.injector.SwaggerConfig().Address(),

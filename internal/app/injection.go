@@ -6,6 +6,9 @@ import (
 	blogRepository "github.com/Georgy27/blogger_api/internal/blog/repository"
 	blogService "github.com/Georgy27/blogger_api/internal/blog/service"
 	"github.com/Georgy27/blogger_api/internal/config"
+	postHandler "github.com/Georgy27/blogger_api/internal/post/handler"
+	postRepository "github.com/Georgy27/blogger_api/internal/post/repository"
+	postService "github.com/Georgy27/blogger_api/internal/post/service"
 	"github.com/Georgy27/blogger_api/pkg/closer"
 	"github.com/Georgy27/blogger_api/pkg/db"
 	"github.com/Georgy27/blogger_api/pkg/db/pg"
@@ -19,6 +22,10 @@ type injector struct {
 	blogRepository blogRepository.BlogRepository
 	blogService    blogService.BlogService
 	blogHandler    *handler.BlogHandler
+
+	postRepository postRepository.PostRepository
+	postService    postService.PostService
+	postHandler    *postHandler.PostHandler
 
 	pgConfig      config.PGConfig
 	grpcConfig    config.GRPCConfig
@@ -109,7 +116,7 @@ func (i *injector) GetTxManager(ctx context.Context) db.TxManager {
 	return i.txManager
 }
 
-func (i *injector) GetNoteRepository(ctx context.Context) blogRepository.BlogRepository {
+func (i *injector) GetBlogRepository(ctx context.Context) blogRepository.BlogRepository {
 	if i.blogRepository == nil {
 		i.blogRepository = blogRepository.NewBlogRepository(i.GetDB(ctx))
 	}
@@ -120,7 +127,7 @@ func (i *injector) GetNoteRepository(ctx context.Context) blogRepository.BlogRep
 func (i *injector) GetBlogService(ctx context.Context) blogService.BlogService {
 	if i.blogService == nil {
 		i.blogService = blogService.NewBlogService(
-			i.GetNoteRepository(ctx),
+			i.GetBlogRepository(ctx),
 			i.GetTxManager(ctx),
 		)
 	}
@@ -136,4 +143,32 @@ func (i *injector) GetBlogHandler(ctx context.Context) *handler.BlogHandler {
 	}
 
 	return i.blogHandler
+}
+
+func (i *injector) GetPostRepository(ctx context.Context) postRepository.PostRepository {
+	if i.postRepository == nil {
+		i.postRepository = postRepository.NewPostRepository(i.GetDB(ctx))
+	}
+
+	return i.postRepository
+}
+
+func (i *injector) GetPostService(ctx context.Context) postService.PostService {
+	if i.postService == nil {
+		i.postService = postService.NewPostService(
+			i.GetPostRepository(ctx),
+			i.GetBlogService(ctx),
+			i.GetTxManager(ctx),
+		)
+	}
+
+	return i.postService
+}
+func (i *injector) GetPostHandler(ctx context.Context) *postHandler.PostHandler {
+	if i.postHandler == nil {
+		i.postHandler = postHandler.NewPostHandler(
+			i.GetPostService(ctx))
+	}
+
+	return i.postHandler
 }

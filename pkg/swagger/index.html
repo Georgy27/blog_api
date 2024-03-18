@@ -14,8 +14,11 @@
   window.onload = function() {
     const ui = SwaggerUIBundle({
       urls: [
-        { url: "/api.swagger.json", name: "Auth API V1" },
+        { url: "/blogger-api.swagger.json", name: "Blog API V1",  },
+
         // Добавьте дополнительные файлы API здесь
+
+        { url: "/post-api.swagger.json", name: "Post API V1" }
       ],
       dom_id: "#swagger-ui",
       deepLinking: true,

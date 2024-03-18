@@ -349,38 +349,11 @@ func (m *CreateBlogRequest) validate(all bool) error {
 
 	var errors []error
 
-	if l := utf8.RuneCountInString(m.GetName()); l < 1 || l > 15 {
-		err := CreateBlogRequestValidationError{
-			field:  "Name",
-			reason: "value length must be between 1 and 15 runes, inclusive",
-		}
-		if !all {
-			return err
-		}
-		errors = append(errors, err)
-	}
+	// no validation rules for Name
 
-	if l := utf8.RuneCountInString(m.GetDescription()); l < 1 || l > 500 {
-		err := CreateBlogRequestValidationError{
-			field:  "Description",
-			reason: "value length must be between 1 and 500 runes, inclusive",
-		}
-		if !all {
-			return err
-		}
-		errors = append(errors, err)
-	}
+	// no validation rules for Description
 
-	if l := utf8.RuneCountInString(m.GetWebsiteUrl()); l < 1 || l > 100 {
-		err := CreateBlogRequestValidationError{
-			field:  "WebsiteUrl",
-			reason: "value length must be between 1 and 100 runes, inclusive",
-		}
-		if !all {
-			return err
-		}
-		errors = append(errors, err)
-	}
+	// no validation rules for WebsiteUrl
 
 	if len(errors) > 0 {
 		return CreateBlogRequestMultiError(errors)

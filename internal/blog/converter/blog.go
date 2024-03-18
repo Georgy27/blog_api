@@ -3,7 +3,7 @@ package converter
 import (
 	"database/sql"
 	"github.com/Georgy27/blogger_api/internal/blog/model"
-	bloggerV1 "github.com/Georgy27/blogger_api/pkg/blogger_v1"
+	bloggerV1 "github.com/Georgy27/blogger_api/pkg/proto/blogger_v1"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 

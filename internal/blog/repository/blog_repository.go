@@ -1,7 +1,6 @@
 package repository
 
 import (
-	"fmt"
 	"github.com/Georgy27/blogger_api/internal/blog/repository/converter"
 	sq "github.com/Masterminds/squirrel"
 	"time"
@@ -34,7 +33,6 @@ func NewBlogRepository(db db.Client) BlogRepository {
 }
 
 func (r *blogRepo) CreateBlog(ctx context.Context, info *model.BlogInfo) (*model.Blog, error) {
-	fmt.Println(info.Name, info.Description, info.WebsiteUrl)
 	builder := sq.Insert(tableName).
 		PlaceholderFormat(sq.Dollar).
 		Columns(columnName, columnDescription, columnWebsiteUrl).
