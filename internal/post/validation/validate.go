@@ -15,10 +15,12 @@ func ValidateID(id int64) validate.Condition {
 	}
 }
 
-func ValidateTitle(title string) validate.Condition {
+func ValidateTitle(title string, method string) validate.Condition {
 	return func(ctx context.Context) error {
-		if title == "" {
-			return validate.NewValidationErrors("title must not be empty")
+		if method == "create" {
+			if title == "" {
+				return validate.NewValidationErrors("title must not be empty")
+			}
 		}
 
 		if len(title) > 30 {
@@ -29,10 +31,12 @@ func ValidateTitle(title string) validate.Condition {
 	}
 }
 
-func ValidateContent(content string) validate.Condition {
+func ValidateContent(content string, method string) validate.Condition {
 	return func(ctx context.Context) error {
-		if content == "" {
-			return validate.NewValidationErrors("content must not be empty")
+		if method == "create" {
+			if content == "" {
+				return validate.NewValidationErrors("content must not be empty")
+			}
 		}
 
 		if len(content) > 1000 {
@@ -43,10 +47,12 @@ func ValidateContent(content string) validate.Condition {
 	}
 }
 
-func ValidateShortDescription(shortDescription string) validate.Condition {
+func ValidateShortDescription(shortDescription string, method string) validate.Condition {
 	return func(ctx context.Context) error {
-		if shortDescription == "" {
-			return validate.NewValidationErrors("short_description must not be empty")
+		if method == "create" {
+			if shortDescription == "" {
+				return validate.NewValidationErrors("short_description must not be empty")
+			}
 		}
 
 		if len(shortDescription) > 100 {

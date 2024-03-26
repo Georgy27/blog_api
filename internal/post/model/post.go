@@ -20,6 +20,14 @@ type PostInfo struct {
 	BlogName         string
 }
 
+type ListPost struct {
+	PagesCount int64
+	Page       int64
+	PageSize   int64
+	TotalCount int64
+	Post       []*Post
+}
+
 type UpdatePostInfo struct {
 	BlogID           int64
 	Title            sql.NullString

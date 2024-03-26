@@ -5,6 +5,7 @@ import (
 	"github.com/Georgy27/blogger_api/internal/post/model"
 	postV1 "github.com/Georgy27/blogger_api/pkg/proto/post_v1"
 	"google.golang.org/protobuf/types/known/timestamppb"
+	"math"
 )
 
 func ToPostProtoFromService(post *model.Post) *postV1.Post {
@@ -22,12 +23,32 @@ func ToPostProtoFromService(post *model.Post) *postV1.Post {
 	}
 }
 
-func ToPostProtoListFromService(posts []*model.Post) []*postV1.Post {
-	var result []*postV1.Post
+func ToPostProtoListFromService(posts []*model.Post, totalCount, limit, offset int64) *postV1.ListPostsResponse {
+	var result postV1.ListPostsResponse
+
 	for _, post := range posts {
-		result = append(result, ToPostProtoFromService(post))
+		result.Posts = append(result.Posts, ToPostProtoFromService(post))
 	}
-	return result
+
+	if limit == 0 {
+		limit = 10
+	}
+
+	if offset == 0 {
+		offset = 1
+	}
+
+	pagesCount := int64(math.Ceil(float64(totalCount) / float64(limit)))
+	if pagesCount == 0 {
+		pagesCount = 1
+	}
+
+	result.PagesCount = pagesCount
+	result.Page = offset
+	result.PageSize = limit
+	result.TotalCount = totalCount
+
+	return &result
 }
 
 func ToPostInfoProtoFromService(postInfo model.PostInfo) *postV1.PostInfo {

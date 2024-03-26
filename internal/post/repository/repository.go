@@ -10,5 +10,6 @@ type PostRepository interface {
 	GetPost(ctx context.Context, id int64) (*model.Post, error)
 	UpdatePost(ctx context.Context, id int64, info *model.UpdatePostInfo) error
 	DeletePost(ctx context.Context, id int64) error
-	ListPosts(ctx context.Context) ([]*model.Post, error)
+	ListPosts(ctx context.Context, limit int64, offset int64) ([]*model.Post, error)
+	CountPosts(ctx context.Context) (int64, error)
 }

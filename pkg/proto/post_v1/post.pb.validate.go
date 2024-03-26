@@ -1260,6 +1260,14 @@ func (m *ListPostsResponse) validate(all bool) error {
 
 	}
 
+	// no validation rules for PagesCount
+
+	// no validation rules for Page
+
+	// no validation rules for PageSize
+
+	// no validation rules for TotalCount
+
 	if len(errors) > 0 {
 		return ListPostsResponseMultiError(errors)
 	}

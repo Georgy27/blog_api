@@ -252,6 +252,22 @@
             "type": "object",
             "$ref": "#/definitions/post_v1Post"
           }
+        },
+        "pagesCount": {
+          "type": "string",
+          "format": "int64"
+        },
+        "page": {
+          "type": "string",
+          "format": "int64"
+        },
+        "pageSize": {
+          "type": "string",
+          "format": "int64"
+        },
+        "totalCount": {
+          "type": "string",
+          "format": "int64"
         }
       }
     },
